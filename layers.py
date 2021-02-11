@@ -51,9 +51,8 @@ class ChebConv_Coma(ChebConv):
         return out
 
     def message(self, x_j, norm):
-        x_j = x_j.transpose(0,1)
         print(x_j.shape)
-        return norm.view(-1,1,1) * x_j
+        return norm.view(1,-1,1) * x_j
 
 
 class Pool(MessagePassing):
