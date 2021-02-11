@@ -60,8 +60,8 @@ class Pool(MessagePassing):
 
     def forward(self, x, pool_mat,  dtype=None):
         x = x.transpose(0,1)
-        print(pool_mat.shape)
-        print(pool_mat._values())
+        #pool_mat.shape [1256,5023]
+        print(pool_mat)
         print(pool_mat.size())
         out = self.propagate(edge_index=pool_mat._indices(), x=x, norm=pool_mat._values(), size=pool_mat.size())
         return out.transpose(0,1)
