@@ -54,6 +54,7 @@ class ComaDataset(InMemoryDataset):
             mesh_verts = torch.Tensor(mesh.v)
             adjacency = get_vert_connectivity(mesh.v, mesh.f).tocoo()
             edge_index = torch.Tensor(np.vstack((adjacency.row, adjacency.col)))
+            edge_index = edge_index.long()
             data = Data(x=mesh_verts, y=mesh_verts, edge_index=edge_index)
 
             if self.split == 'sliced':

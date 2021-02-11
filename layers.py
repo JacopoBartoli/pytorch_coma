@@ -32,7 +32,6 @@ class ChebConv_Coma(ChebConv):
     def forward(self, x, edge_index, norm, edge_weight=None):
         Tx_0 = x
         out = torch.matmul(Tx_0, self.weight[0])
-
         x = x.transpose(0,1)
         Tx_0 = x
         if self.weight.size(0) > 1:
@@ -52,7 +51,9 @@ class ChebConv_Coma(ChebConv):
         return out
 
     def message(self, x_j, norm):
-        return norm.view(-1, 1, 1) * x_j
+        x_j = x_j.transpose(0,1)
+        print(x_j.shape)
+        return norm.view(-1,1,1) * x_j
 
 
 class Pool(MessagePassing):
