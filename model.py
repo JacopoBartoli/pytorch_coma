@@ -52,7 +52,7 @@ class Coma(torch.nn.Module):
             print("Shape di x dopo Relu : ")
             print(x.shape)
             print("Shape downsample_matrices : ")
-            print(self.downsample_matrices[i].shape)
+            #print(self.downsample_matrices[i].shape)
 
             x = self.pool(x, self.downsample_matrices[i])
 
