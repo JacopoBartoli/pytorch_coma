@@ -38,7 +38,7 @@ class Coma(torch.nn.Module):
 
     def encoder(self, x):
         for i in range(self.n_layers):
-            print("Ciclo " + i)
+            print("Ciclo " + str(i))
             print("Shape di x : " + x.shape)  # [ 16 , 5023 , 3]
             print("Shape di A_edge_index[i] : " + self.A_edge_index[i].shape)  # [ 2 , 29990 ]
             print("Shape di self.A_norm[i] : " + self.A_norm[i].shape)  # [ 29990 ]
