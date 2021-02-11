@@ -59,7 +59,8 @@ class Pool(MessagePassing):
         super(Pool, self).__init__(flow='target_to_source')
 
     def forward(self, x, pool_mat,  dtype=None):
-        #x = x.transpose(0,1)
+        x = x.transpose(0,1)
+        print(" x trasposta in pool :")
         print(x.shape)
 
         #pool_mat.shape [1256,5023]

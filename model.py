@@ -38,6 +38,7 @@ class Coma(torch.nn.Module):
 
     def encoder(self, x):
         for i in range(self.n_layers):
+
             print("Ciclo " + str(i))
             print("Shape di x : ")
             print(x.shape)  # [ 16 , 5023 , 3]
@@ -45,8 +46,16 @@ class Coma(torch.nn.Module):
             print(self.A_edge_index[i].shape)  # [ 2 , 29990 ]
             print("Shape di self.A_norm[i] : ")
             print(self.A_norm[i].shape)  # [ 29990 ]
+
             x = F.relu(self.cheb[i](x, self.A_edge_index[i], self.A_norm[i]))
+
+            print("Shape di x dopo Relu : ")
+            print(x.shape)
+            print("Shape downsample_matrices : ")
+            print(self.downsample_matrices[i].shape)
+
             x = self.pool(x, self.downsample_matrices[i])
+
         x = x.reshape(x.shape[0], self.enc_lin.in_features)
         x = F.relu(self.enc_lin(x))
         return x
