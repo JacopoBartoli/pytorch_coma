@@ -42,9 +42,10 @@ class ChebConv_Coma(ChebConv):
             # edge_index.shape: [2, 29990 ]
             # norm.shape: [29990]
             Tx_1 = self.propagate(edge_index, x=x, norm=norm)
-            print('Tx_1.shape:',Tx_1.shape)
+            #Tx_1.shape: torch.Size([5023, 16, 3])
+
             Tx_1_transpose = Tx_1.transpose(0, 1)
-            print('matmul:',torch.matmul(Tx_1_transpose, self.weight[1]).shape)
+            #matmul: torch.Size([16, 5023, 16])
 
             out = out + torch.matmul(Tx_1_transpose, self.weight[1])
 
@@ -74,10 +75,12 @@ class Pool(MessagePassing):
 
     def forward(self, x, pool_mat,  dtype=None):
         # x = x.transpose(0,1)
-        print('forward pool x:shape',x.shape)
+        # forward pool x:shape torch.Size([16, 5023, 16])
         pool_mat2 = pool_mat
         pool_mat2 = pool_mat2.transpose(0,1)
+        print(x.shape)
         print('mat2.shape', pool_mat2.shape)
+        print('mat2.size',pool_mat2.size())
         # x.shape: [ 5023, 16, 16]
         # edge_index --> pool_mat._indices().shape : [ 2, 1256 ]
         # norm --> pool_mat._values().shape) : [ 1256 ]
