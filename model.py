@@ -53,6 +53,9 @@ class Coma(torch.nn.Module):
 
             x = self.pool(x, self.downsample_matrices[i])
 
+            print("shape x dopo pool")
+            print(x.shape)
+
         x = x.reshape(x.shape[0], self.enc_lin.in_features)
         x = F.relu(self.enc_lin(x))
         return x
