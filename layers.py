@@ -62,7 +62,7 @@ class ChebConv_Coma(ChebConv):
         #norm.view(-1,1,1):torch.Size([29990, 1, 1])
         # I think the correct code is the one commented below.
         #norm.view(1,-1,1).shape:torch.Size([1, 29990, 1])
-        return norm.view(-1,1,1) * x_j
+        return norm.view(1,-1,1) * x_j
 
 
 class Pool(MessagePassing):
