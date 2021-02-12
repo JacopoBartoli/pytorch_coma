@@ -56,8 +56,8 @@ class Coma(torch.nn.Module):
             #print("shape x dopo pool")
             # x.shape: [ 16, 5023, 16 ]
 
-        print("shape x dopo ciclo")
-        print(x.shape)
+        #print("shape x dopo ciclo")
+        #print(x.shape)
         x = x.reshape(x.shape[0], self.enc_lin.in_features)
         x = F.relu(self.enc_lin(x))
         return x
