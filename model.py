@@ -67,7 +67,7 @@ class Coma(torch.nn.Module):
     def decoder(self, x):
         x = F.relu(self.dec_lin(x))
         x = x.reshape(x.shape[0], -1, self.filters[-1])
-        for i in range(self.n_layers):
+        for i in range(self.n_layers-1):
             x = self.pool(x, self.upsample_matrices[-i-1])
             print('layers',self.n_layers-i)
             print('i',i)
