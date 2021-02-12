@@ -73,11 +73,11 @@ class Pool(MessagePassing):
         super(Pool, self).__init__(flow='target_to_source')
 
     def forward(self, x, pool_mat,  dtype=None):
-        x = x.transpose(0,1)
+        # x = x.transpose(0,1)
         print(x.shape)
         pool_mat2 = pool_mat
         pool_mat2 = pool_mat2.transpose(0,1)
-        print(pool_mat2.size)
+        print(pool_mat2.shape)
         # x.shape: [ 5023, 16, 16]
         # edge_index --> pool_mat._indices().shape : [ 2, 1256 ]
         # norm --> pool_mat._values().shape) : [ 1256 ]
