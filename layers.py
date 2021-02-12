@@ -83,8 +83,9 @@ class Pool(MessagePassing):
         return out.transpose(0,1)
 
     def message(self, x_j, norm):
-        print(x_j.shape)
-        print(norm.shape)
-        return norm.view(-1, 1, 1) * x_j
+        # x_j.shape: [5023, 1256, 16]
+        # norm.shape: [1256]
+        #return norm.view(-1, 1, 1) * x_j
+        return norm.view(1, -1, 1) * x_j
 
 
