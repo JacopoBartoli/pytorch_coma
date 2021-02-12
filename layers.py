@@ -39,6 +39,9 @@ class ChebConv_Coma(ChebConv):
         Tx_0 = x
         if self.weight.size(0) > 1:
             #x.shape:torch.Size([5023, 16, 3])
+            print("Edge")
+            print(edge_index.shape)
+            print(norm.shape)
             Tx_1 = self.propagate(edge_index, x=x, norm=norm)
             # print(Tx_1.shape())
             Tx_1_transpose = Tx_1.transpose(0, 1)
@@ -71,7 +74,10 @@ class Pool(MessagePassing):
 
     def forward(self, x, pool_mat,  dtype=None):
         x = x.transpose(0,1)
-        print(x.shape)
+        # x.shape: [ 5023, 16, 16]
+        print("Pool")
+        print(pool_mat._indices().shape)
+        print(pool_mat._values().shape)
         out = self.propagate(edge_index=pool_mat._indices(), x=x, norm=pool_mat._values(), size=pool_mat.size())
         return out.transpose(0,1)
 
