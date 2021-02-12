@@ -67,7 +67,7 @@ class Coma(torch.nn.Module):
         x = x.reshape(x.shape[0], -1, self.filters[-1])
         for i in range(self.n_layers):
             x = self.pool(x, self.upsample_matrices[-i-1])
-            print('decoder post conv x:',x.shape)
+            print('decoder post ups x:',x.shape)
             x = F.relu(self.cheb_dec[i](x, self.A_edge_index[self.n_layers-i-1], self.A_norm[self.n_layers-i-1]))
             print('decoder post conv x:', x.shape)
         print('last level x:', x.shape)
