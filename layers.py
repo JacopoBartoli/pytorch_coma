@@ -77,9 +77,6 @@ class Pool(MessagePassing):
         # edge_index --> pool_mat._indices().shape : [ 2, 1256 ]
         # norm --> pool_mat._values().shape) : [ 1256 ]
         # pool_mat.size():[ 1256, 5023 ]
-        print(pool_mat.shape())
-        #a = pool_mat.transpose(0,1)
-        #print(a)
         out = self.propagate(edge_index=pool_mat._indices(), x=x, norm=pool_mat._values(), size=pool_mat.size())
 
         return out.transpose(0,1)
