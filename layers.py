@@ -74,6 +74,7 @@ class Pool(MessagePassing):
 
     def forward(self, x, pool_mat,  dtype=None):
         x = x.transpose(0,1)
+        print(x.shape)
         pool_mat2 = pool_mat
         pool_mat2 = pool_mat2.transpose(0,1)
         print(pool_mat2.size)
