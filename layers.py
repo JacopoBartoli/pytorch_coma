@@ -58,7 +58,7 @@ class ChebConv_Coma(ChebConv):
         if self.bias is not None:
             out = out + self.bias
 
-        return out.transpose()
+        return out.transpose(0,1)
 
     def message(self, x_j, norm):
         #x_j.shape:torch.Size([5023, 29990, 3])
