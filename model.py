@@ -53,8 +53,8 @@ class Coma(torch.nn.Module):
 
             x = self.pool(x, self.downsample_matrices[i])
 
-            print("shape x dopo pool")
-            print(x.shape)
+            #print("shape x dopo pool")
+            # x.shape: [ 16, 5023, 16 ]
 
         print("shape x dopo ciclo")
         print(x.shape)
