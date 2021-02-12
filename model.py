@@ -20,7 +20,7 @@ class Coma(torch.nn.Module):
         self.cheb = torch.nn.ModuleList([ChebConv_Coma(self.filters[i], self.filters[i+1], self.K[i])
                                          for i in range(len(self.filters)-2)])
         self.cheb_dec = torch.nn.ModuleList([ChebConv_Coma(self.filters[-i-1], self.filters[-i-2], self.K[i])
-                                             for i in range(len(self.filters)-1)])
+                                             for i in range(len(self.filters)-2)])
         self.cheb_dec[-1].bias = None  # No bias for last convolution layer
         self.pool = Pool()
         self.enc_lin = torch.nn.Linear(self.downsample_matrices[-1].shape[0]*self.filters[-1], self.z)
