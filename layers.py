@@ -42,9 +42,9 @@ class ChebConv_Coma(ChebConv):
             # edge_index.shape: [2, 29990 ]
             # norm.shape: [29990]
             Tx_1 = self.propagate(edge_index, x=x, norm=norm)
-            print(Tx_1.shape())
+            print(Tx_1.shape)
             Tx_1_transpose = Tx_1.transpose(0, 1)
-            print(torch.matmul(Tx_1_transpose, self.weight[1]))
+            print(torch.matmul(Tx_1_transpose, self.weight[1]).shape)
             out = out + torch.matmul(Tx_1_transpose, self.weight[1])
 
         for k in range(2, self.weight.size(0)):
