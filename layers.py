@@ -74,7 +74,7 @@ class Pool(MessagePassing):
         super(Pool, self).__init__(flow='target_to_source')
 
     def forward(self, x, pool_mat,  dtype=None):
-        x = x.transpose(0,1)
+        #x = x.transpose(0,1)
         # forward pool x:shape torch.Size([16, 5023, 16])
         pool_mat2 = pool_mat
         pool_mat2 = pool_mat2.transpose(0,1)
