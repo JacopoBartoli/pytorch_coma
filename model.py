@@ -42,6 +42,7 @@ class Coma(torch.nn.Module):
         return x
 
     def encoder(self, x):
+        print('filters:',self.filters)
         for i in range(self.n_layers):
             # x.shape: [ 16 , 5023 , 3 ]
             # self.A_edge_index[i].shape: [ 2 , 29990 ]
@@ -58,6 +59,7 @@ class Coma(torch.nn.Module):
 
         #print("shape x dopo ciclo")
         #print(x.shape)
+        # Fully connected layer!!!
         x = x.reshape(x.shape[0], self.enc_lin.in_features)
         x = F.relu(self.enc_lin(x))
         return x
@@ -67,7 +69,6 @@ class Coma(torch.nn.Module):
         x = x.reshape(x.shape[0], -1, self.filters[-1])
         for i in range(self.n_layers):
             x = self.pool(x, self.upsample_matrices[-i-1])
-            print('decoder post ups x:',x.shape)
             x = F.relu(self.cheb_dec[i](x, self.A_edge_index[self.n_layers-i-1], self.A_norm[self.n_layers-i-1]))
             print('decoder post conv x:', x.shape)
         print('last level x:', x.shape)
