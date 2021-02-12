@@ -31,12 +31,18 @@ class ChebConv_Coma(ChebConv):
 
     def forward(self, x, edge_index, norm, edge_weight=None):
         Tx_0 = x
+        # self.weight[0].shape:torch.Size([3, 16])
+        # self.weight[1].shape:torch.Size([3, 16])
         out = torch.matmul(Tx_0, self.weight[0])
+        # out.shape:torch.Size([16, 5023, 16])
         x = x.transpose(0,1)
         Tx_0 = x
         if self.weight.size(0) > 1:
+            #x.shape:torch.Size([5023, 16, 3])
             Tx_1 = self.propagate(edge_index, x=x, norm=norm)
+            # print(Tx_1.shape())
             Tx_1_transpose = Tx_1.transpose(0, 1)
+            print(torch.matmul(Tx_1_transpose, self.weight[1]))
             out = out + torch.matmul(Tx_1_transpose, self.weight[1])
 
         for k in range(2, self.weight.size(0)):
@@ -51,7 +57,12 @@ class ChebConv_Coma(ChebConv):
         return out
 
     def message(self, x_j, norm):
-        return norm.view(1,-1,1) * x_j
+        #x_j.shape:torch.Size([5023, 29990, 3])
+        # norm.shape:torch.Size([29990])
+        #norm.view(-1,1,1):torch.Size([29990, 1, 1])
+        # I think the correct code is the one commented below.
+        #norm.view(1,-1,1).shape:torch.Size([1, 29990, 1])
+        return norm.view(-1,1,1) * x_j
 
 
 class Pool(MessagePassing):
@@ -59,14 +70,14 @@ class Pool(MessagePassing):
         super(Pool, self).__init__(flow='target_to_source')
 
     def forward(self, x, pool_mat,  dtype=None):
-        #x = x.transpose(0,1)
+        x = x.transpose(0,1)
         print(x.shape)
-        #pool_mat.shape [1256,5023]
-        #pool_mat.size()[1256,5023]
         out = self.propagate(edge_index=pool_mat._indices(), x=x, norm=pool_mat._values(), size=pool_mat.size())
         return out.transpose(0,1)
 
     def message(self, x_j, norm):
-        return norm.view(1, -1, 1) * x_j
+        print(x_j.shape)
+        print(norm.shape)
+        return norm.view(-1, 1, 1) * x_j
 
 
