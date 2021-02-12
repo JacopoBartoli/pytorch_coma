@@ -58,7 +58,7 @@ class ChebConv_Coma(ChebConv):
         if self.bias is not None:
             out = out + self.bias
 
-        return out
+        return out.transpose()
 
     def message(self, x_j, norm):
         #x_j.shape:torch.Size([5023, 29990, 3])
@@ -74,7 +74,7 @@ class Pool(MessagePassing):
         super(Pool, self).__init__(flow='target_to_source')
 
     def forward(self, x, pool_mat,  dtype=None):
-        # x = x.transpose(0,1)
+        x = x.transpose(0,1)
         # forward pool x:shape torch.Size([16, 5023, 16])
         pool_mat2 = pool_mat
         pool_mat2 = pool_mat2.transpose(0,1)
