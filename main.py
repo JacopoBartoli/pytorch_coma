@@ -159,8 +159,8 @@ def train(coma, train_loader, len_dataset, optimizer, device):
         optimizer.zero_grad()
         out = coma(data)
 
-        loss = F.l1_loss(out, data.y)
-
+        #loss = F.l1_loss(out, data.y)
+        loss = F.mse_loss(out, data.y)
         #loss = F.smooth_l1_loss(out, data.y)
 
         # Documentation l1_loss : https://pytorch.org/docs/stable/generated/torch.nn.L1Loss.html#torch.nn.L1Loss
@@ -173,7 +173,6 @@ def train(coma, train_loader, len_dataset, optimizer, device):
 
         # data.num_graphs : 16
 
-        print(out[0])
 
         total_loss += data.num_graphs * loss.item()
         loss.backward()
