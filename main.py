@@ -5,9 +5,6 @@ import os
 import torch
 import numpy as np
 import torch.nn.functional as F
-
-import tensorflow as tf
-
 from torch_geometric.data import DataLoader
 
 from psbody.mesh import Mesh, MeshViewers
@@ -45,8 +42,6 @@ def save_model(coma, optimizer, epoch, train_loss, val_loss, checkpoint_dir):
 
 
 def main(args):
-
-    sess = tf.InteractiveSession()
     if not os.path.exists(args.conf):
         print('Config not found' + args.conf)
 
@@ -174,7 +169,7 @@ def train(coma, train_loader, len_dataset, optimizer, device):
 
         # data.num_graphs : 16
 
-        with tf.Session() as sess:  print(out.eval())
+        print(out.dtype)
 
         total_loss += data.num_graphs * loss.item()
         loss.backward()
