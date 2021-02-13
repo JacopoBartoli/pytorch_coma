@@ -158,9 +158,10 @@ def train(coma, train_loader, len_dataset, optimizer, device):
         optimizer.zero_grad()
         out = coma(data)
         loss = F.l1_loss(out, data.y)
-
-        #print(out)
-        print(out.shape)
+        # Documentation l1_loss : https://pytorch.org/docs/stable/generated/torch.nn.L1Loss.html#torch.nn.L1Loss
+        print(data)
+        print(data.y)
+        #out and loss shape is []
 
         # data.num_graphs : 16
 
