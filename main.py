@@ -158,7 +158,9 @@ def train(coma, train_loader, len_dataset, optimizer, device):
         data = data.to(device)
         optimizer.zero_grad()
         out = coma(data)
-        loss = F.l1_loss(out, data.y)
+        #loss = F.l1_loss(out, data.y)
+        loss = F.smooth_l1_loss(out, data.y)
+
         # Documentation l1_loss : https://pytorch.org/docs/stable/generated/torch.nn.L1Loss.html#torch.nn.L1Loss
 
         # out.shape:torch.Size([80368, 3])
