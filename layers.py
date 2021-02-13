@@ -79,7 +79,6 @@ class Pool(MessagePassing):
         # Added by me a modification of the pool_mat2.size()
         pool_mat2 = pool_mat
         pool_mat2 = pool_mat2.transpose(0,1)
-        print('pool: mat2.shape', pool_mat2.shape)
         # x.shape: [ 5023, 16, 16]
         # edge_index --> pool_mat._indices().shape : [ 2, 1256 ]
         # norm --> pool_mat._values().shape : [ 1256 ]
