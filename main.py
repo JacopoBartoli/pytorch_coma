@@ -160,7 +160,6 @@ def train(coma, train_loader, len_dataset, optimizer, device):
         out = coma(data)
         print("out shape",out.shape)
         print("data shape:",data.y.shape)
-        print(out)
         print(data.y)
 
         loss = F.l1_loss(out, data.y)
