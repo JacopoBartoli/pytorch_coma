@@ -157,7 +157,7 @@ def train(coma, train_loader, len_dataset, optimizer, device):
     for data in train_loader:
         data = data.to(device)
         optimizer.zero_grad()
-        out = coma(data)
+        out = coma(data.x)
         print("out shape",out.shape)
         print("data shape:",data.y.shape)
 
