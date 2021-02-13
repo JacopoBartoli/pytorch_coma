@@ -157,9 +157,9 @@ def train(coma, train_loader, len_dataset, optimizer, device):
     for data in train_loader:
         data = data.to(device)
         optimizer.zero_grad()
-        out = coma(data.x)
+        out = coma(data)
         print("out shape",out.shape)
-        print("data shape:",data.y.shape)
+        print("data shape:",data.shape)
 
         loss = F.l1_loss(out, data.y,reduction='sum')
         #loss = F.mse_loss(out, data.y)
