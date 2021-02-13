@@ -168,7 +168,7 @@ def train(coma, train_loader, len_dataset, optimizer, device):
 
         # data.num_graphs : 16
 
-        print(out.data)
+        print(out)
 
         total_loss += data.num_graphs * loss.item()
         loss.backward()
