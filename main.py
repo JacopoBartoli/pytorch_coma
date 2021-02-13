@@ -159,9 +159,10 @@ def train(coma, train_loader, len_dataset, optimizer, device):
         out = coma(data)
         loss = F.l1_loss(out, data.y)
         print("Loss :")
-        print(loss)
+
         print(data.num_graphs)
         print(loss.item())
+        #print(loss)
         total_loss += data.num_graphs * loss.item()
         loss.backward()
         optimizer.step()
