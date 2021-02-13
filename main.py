@@ -158,8 +158,9 @@ def train(coma, train_loader, len_dataset, optimizer, device):
         data = data.to(device)
         optimizer.zero_grad()
         out = coma(data)
+        print("data",data)
 
-        loss = F.l1_loss(out, data.y,reduction='mean')
+        loss = F.l1_loss(out, data.y)
         #loss = F.mse_loss(out, data.y)
         #loss = F.smooth_l1_loss(out, data.y)
 
