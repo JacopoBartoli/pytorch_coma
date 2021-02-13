@@ -159,7 +159,7 @@ def train(coma, train_loader, len_dataset, optimizer, device):
         optimizer.zero_grad()
         out = coma(data)
 
-        loss = F.l1_loss(out, data.y,reduction='none')
+        loss = F.l1_loss(out, data.y,reduction='mean')
         #loss = F.mse_loss(out, data.y)
         #loss = F.smooth_l1_loss(out, data.y)
 
@@ -169,7 +169,6 @@ def train(coma, train_loader, len_dataset, optimizer, device):
         # data: Batch(batch=[80368], edge_index=[2, 479840], x=[80368, 3], y=[80368, 3])
         # data.y.shape: torch.Size([80368, 3])
         print('loss shape',loss.shape)
-        print('loss',loss.item())
 
         # loss.size() : []
 
