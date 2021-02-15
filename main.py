@@ -162,13 +162,15 @@ def train(coma, train_loader, len_dataset, optimizer, device):
 
         #loss = F.l1_loss(out, data.y)
 
-        if data.y.requires_grad:
-            print("Requires grad")
-            ret = torch.abs(out - data.y)
-            print(ret)
-            ret = torch.mean(ret)
+        target = data.y
 
-        loss = ret
+        if target.requires_grad:
+            print("Requires grad")
+            loss = torch.abs(out - data.y)
+            print(loss)
+            loss = torch.mean(loss)
+
+
 
         #loss = F.mse_loss(out, data.y)
         #loss = F.smooth_l1_loss(out, data.y)
