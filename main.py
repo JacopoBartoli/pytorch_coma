@@ -160,15 +160,9 @@ def train(coma, train_loader, len_dataset, optimizer, device):
         out = coma(data)
         print("data",data)
 
-        #loss = F.l1_loss(out, data.y)
+        loss = F.l1_loss(out, data.y)
 
-        target = data.y
-
-        if target.requires_grad:
-            print("Requires grad")
-            loss = torch.abs(out - data.y)
-            print(loss)
-            loss = torch.mean(loss)
+        print(data.y.requires_grad)
 
 
 
