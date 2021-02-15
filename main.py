@@ -160,13 +160,22 @@ def train(coma, train_loader, len_dataset, optimizer, device):
         out = coma(data)
         print("data",data)
 
-        loss = F.l1_loss(out, data.y)
+        #loss = F.l1_loss(out, data.y)
+
+        if data.y.requires_grad:
+            print("Requires grad")
+            ret = torch.abs(out - data.y)
+            print(ret)
+            ret = torch.mean(ret)
+
+        loss = ret
+
         #loss = F.mse_loss(out, data.y)
         #loss = F.smooth_l1_loss(out, data.y)
 
         # Documentation l1_loss : https://pytorch.org/docs/stable/generated/torch.nn.L1Loss.html#torch.nn.L1Loss
 
-        # out.shape:torch.Size([80368, 3])
+        # out.shape: torch.Size([80368, 3])
         # data: Batch(batch=[80368], edge_index=[2, 479840], x=[80368, 3], y=[80368, 3])
         # data.y.shape: torch.Size([80368, 3])
         print('loss shape',loss.shape)
