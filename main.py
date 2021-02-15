@@ -165,9 +165,7 @@ def train(coma, train_loader, len_dataset, optimizer, device):
         target = data.y
 
         loss = torch.abs(input - target)
-        print(loss)
         loss = torch.mean(loss)
-        print(loss)
 
         #loss = F.l1_loss(out, data.y)
 
