@@ -160,10 +160,8 @@ def train(coma, train_loader, len_dataset, optimizer, device):
         out = coma(data)
         print("data",data)
 
+        data.y.requires_grad = True
         loss = F.l1_loss(out, data.y)
-
-        print(data.y.requires_grad)
-
 
 
         #loss = F.mse_loss(out, data.y)
