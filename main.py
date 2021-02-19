@@ -81,7 +81,6 @@ def main(args):
 
     print('Generating transforms')
     M, A, D, U = mesh_operations.generate_transform_matrices(template_mesh, config['downsampling_factors'])
-    # Codice non funziona non riesce a creare il tensore in modo corretto.
 
     D_t = [scipy_to_torch_sparse(d).to(device) for d in D]
     U_t = [scipy_to_torch_sparse(u).to(device) for u in U]
