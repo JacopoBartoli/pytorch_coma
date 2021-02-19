@@ -9,6 +9,7 @@ from utils import normal
 class ChebConv_Coma(ChebConv):
     def __init__(self, in_channels, out_channels, K, normalization=None, bias=True):
         super(ChebConv_Coma, self).__init__(in_channels, out_channels, K, normalization, bias)
+        self.node_dim = 0
 
     def reset_parameters(self):
         normal(self.weight, 0, 0.1)
@@ -66,7 +67,7 @@ class ChebConv_Coma(ChebConv):
         #norm.view(-1,1,1):torch.Size([29990, 1, 1])
         # I think the correct code is the one commented below.
         #norm.view(1,-1,1).shape:torch.Size([1, 29990, 1])
-        return norm.view(1,-1,1) * x_j
+        return norm.view(-1,1,1) * x_j
 
 
 class Pool(MessagePassing):
@@ -74,16 +75,15 @@ class Pool(MessagePassing):
         super(Pool, self).__init__(flow='target_to_source')
 
     def forward(self, x, pool_mat,  dtype=None):
-        #x = x.transpose(0,1)
         # forward pool x:shape torch.Size([16, 5023, 16])
-        # Added by me a modification of the pool_mat2.size()
-        pool_mat2 = pool_mat
-        pool_mat2 = pool_mat2.transpose(0,1)
+        # Added by me a modification of the pool_mat_right.size()
+        pool_mat_right = pool_mat
+        pool_mat_right = pool_mat_right.transpose(0,1)
         # x.shape: [ 5023, 16, 16]
         # edge_index --> pool_mat._indices().shape : [ 2, 1256 ]
         # norm --> pool_mat._values().shape : [ 1256 ]
         # pool_mat.size():[ 1256, 5023 ]
-        out = self.propagate(edge_index=pool_mat._indices(), x=x, norm=pool_mat._values(), size=pool_mat2.size())
+        out = self.propagate(edge_index=pool_mat._indices(), x=x, norm=pool_mat._values(), size=pool_mat_right.size())
 
         return out
 

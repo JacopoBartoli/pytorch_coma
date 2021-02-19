@@ -23,7 +23,7 @@ def scipy_to_torch_sparse(scp_matrix):
     v = torch.FloatTensor(values)
     shape = scp_matrix.shape
 
-    sparse_tensor = torch.sparse.FloatTensor(i, v, torch.Size(shape))
+    sparse_tensor = torch.sparse.FloatTensor(i, v,torch.Size(shape))
     return sparse_tensor
 
 def adjust_learning_rate(optimizer, lr_decay):
@@ -81,6 +81,7 @@ def main(args):
 
     print('Generating transforms')
     M, A, D, U = mesh_operations.generate_transform_matrices(template_mesh, config['downsampling_factors'])
+    # Codice non funziona non riesce a creare il tensore in modo corretto.
 
     D_t = [scipy_to_torch_sparse(d).to(device) for d in D]
     U_t = [scipy_to_torch_sparse(u).to(device) for u in U]
@@ -96,8 +97,8 @@ def main(args):
     normalize_transform = Normalize()
     dataset = ComaDataset(data_dir, dtype='train', split=args.split, split_term=args.split_term, pre_transform=normalize_transform)
     dataset_test = ComaDataset(data_dir, dtype='test', split=args.split, split_term=args.split_term, pre_transform=normalize_transform)
-    train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=workers_thread)
-    test_loader = DataLoader(dataset_test, batch_size=1, shuffle=False, num_workers=workers_thread)
+    train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=0)#num_workers=workers_thread
+    test_loader = DataLoader(dataset_test, batch_size=1, shuffle=False, num_workers=0)#num_workers=workers_thread
 
     print('Loading model')
     start_epoch = 1
@@ -158,21 +159,14 @@ def train(coma, train_loader, len_dataset, optimizer, device):
         data = data.to(device)
         optimizer.zero_grad()
         out = coma(data)
-        print("data",data)
-
-        loss = F.l1_loss(out, data.y)
-        #loss = F.mse_loss(out, data.y)
-        #loss = F.smooth_l1_loss(out, data.y)
+        loss = F.l1_loss(out.cuda(), data.y.cuda())
 
         # Documentation l1_loss : https://pytorch.org/docs/stable/generated/torch.nn.L1Loss.html#torch.nn.L1Loss
 
         # out.shape:torch.Size([80368, 3])
         # data: Batch(batch=[80368], edge_index=[2, 479840], x=[80368, 3], y=[80368, 3])
         # data.y.shape: torch.Size([80368, 3])
-        print('loss shape',loss.shape)
-
         # loss.size() : []
-
         # data.num_graphs : 16
 
         total_loss += data.num_graphs * loss.item()
