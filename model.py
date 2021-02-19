@@ -28,35 +28,26 @@ class Coma(torch.nn.Module):
         self.reset_parameters()
 
     def forward(self, data):
+        # Some question about data.edge_index that is apparently unused.
         x, edge_index = data.x, data.edge_index
         batch_size = data.num_graphs
-        # x.shape:torch.Size([80368, 3])
-        # Original reshape
         x = x.reshape(batch_size, -1, self.filters[0])
-        #edge_index = edge_index.reshape(batch_size,2,-1)
-        #print(edge_index.shape)
-        # x.shape: torch.Size([16, 5023, 3])
-        # I think torch need something like [batch,channels,data], like the following line.
-        # x = x.view(batch_size,self.filters[0],-1)
         x = self.encoder(x)
         x = self.decoder(x)
         x = x.reshape(-1, self.filters[0])
         return x
 
     def encoder(self, x):
-        #print('filters:',self.filters)
         for i in range(self.n_layers):
             # x.shape: [ 16 , 5023 , 3 ]
             # self.A_edge_index[i].shape: [ 2 , 29990 ]
             # self.A_norm[i].shape: [ 29990 ]
-
             x = F.relu(self.cheb[i](x, self.A_edge_index[i], self.A_norm[i]))
 
             # x.shape: [ 16, 5023, 16 ]
-
             x = self.pool(x, self.downsample_matrices[i])
-            # x.shape: [ 16, 5023, 16 ]
-        # Fully connected layer!!!
+
+        # x.shape: [ 16, 5023, 16 ]
         x = x.reshape(x.shape[0], self.enc_lin.in_features)
         x = F.relu(self.enc_lin(x))
         return x

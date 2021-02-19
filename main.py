@@ -161,8 +161,6 @@ def train(coma, train_loader, len_dataset, optimizer, device):
         out = coma(data)
         loss = F.l1_loss(out.cuda(), data.y.cuda())
 
-        # Documentation l1_loss : https://pytorch.org/docs/stable/generated/torch.nn.L1Loss.html#torch.nn.L1Loss
-
         # out.shape:torch.Size([80368, 3])
         # data: Batch(batch=[80368], edge_index=[2, 479840], x=[80368, 3], y=[80368, 3])
         # data.y.shape: torch.Size([80368, 3])
