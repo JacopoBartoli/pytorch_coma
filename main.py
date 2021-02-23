@@ -117,7 +117,7 @@ def main(args):
         start_epoch = checkpoint['epoch_num']
         coma.load_state_dict(checkpoint['state_dict'])
         optimizer.load_state_dict(checkpoint['optimizer'])
-        #To find if this is fixed in pytorch
+        # To find if this is fixed in pytorch
         for state in optimizer.state.values():
             for k, v in state.items():
                 if isinstance(v, torch.Tensor):
@@ -160,13 +160,11 @@ def train(coma, train_loader, len_dataset, optimizer, device):
         optimizer.zero_grad()
         out = coma(data)
         loss = F.l1_loss(out, data.y)
-
         # out.shape:torch.Size([80368, 3])
         # data: Batch(batch=[80368], edge_index=[2, 479840], x=[80368, 3], y=[80368, 3])
         # data.y.shape: torch.Size([80368, 3])
         # loss.size() : []
         # data.num_graphs : 16
-
         total_loss += data.num_graphs * loss.item()
         loss.backward()
         optimizer.step()
@@ -176,6 +174,7 @@ def train(coma, train_loader, len_dataset, optimizer, device):
 def evaluate(coma, output_dir, test_loader, dataset, template_mesh, device, visualize=False):
     coma.eval()
     total_loss = 0
+    total_euclidean = 0
     meshviewer = MeshViewers(shape=(1, 2))
     for i, data in enumerate(test_loader):
         data = data.to(device)
@@ -183,11 +182,16 @@ def evaluate(coma, output_dir, test_loader, dataset, template_mesh, device, visu
             out = coma(data)
         loss = F.l1_loss(out, data.y)
         total_loss += data.num_graphs * loss.item()
+        # Compute euclidean loss
+        save_out = out.detach().cpu().numpy()
+        save_out = save_out * dataset.std.numpy() + dataset.mean.numpy()
+        expected_out = (data.y.detach().cpu().numpy()) * dataset.std.numpy() + dataset.mean.numpy()
+        total_euclidean += np.mean(np.sqrt(np.sum((save_out * 1000 - expected_out * 1000) ** 2, axis=1)))
 
         if visualize and i % 100 == 0:
-            save_out = out.detach().cpu().numpy()
-            save_out = save_out*dataset.std.numpy()+dataset.mean.numpy()
-            expected_out = (data.y.detach().cpu().numpy())*dataset.std.numpy()+dataset.mean.numpy()
+            # save_out = out.detach().cpu().numpy()
+            # save_out = save_out*dataset.std.numpy()+dataset.mean.numpy()
+            # expected_out = (data.y.detach().cpu().numpy())*dataset.std.numpy()+dataset.mean.numpy()
             result_mesh = Mesh(v=save_out, f=template_mesh.f)
             expected_mesh = Mesh(v=expected_out, f=template_mesh.f)
             meshviewer[0][0].set_dynamic_meshes([result_mesh])
