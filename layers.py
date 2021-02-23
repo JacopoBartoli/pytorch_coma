@@ -45,9 +45,7 @@ class ChebConv_Coma(ChebConv):
             # norm.shape: [29990]
             Tx_1 = self.propagate(edge_index, x=x, norm=norm)
             # Tx_1.shape: torch.Size([5023, 16, 3])
-
             Tx_1_transpose = Tx_1.transpose(0, 1)
-
             out = out + torch.matmul(Tx_1_transpose, self.weight[1])
 
         for k in range(2, self.weight.size(0)):
@@ -62,9 +60,6 @@ class ChebConv_Coma(ChebConv):
         return out
 
     def message(self, x_j, norm):
-        # x_j.shape:torch.Size([5023, 29990, 3])
-        # norm.shape:torch.Size([29990])
-        # norm.view(-1,1,1):torch.Size([29990, 1, 1])
         return norm.view(-1,1,1) * x_j
 
 
@@ -76,12 +71,12 @@ class Pool(MessagePassing):
         # forward pool x:shape torch.Size([16, 5023, 16])
         # Need a reshape of the pool_mat
         pool_mat_reshaped = pool_mat
-        pool_mat_reshaped = pool_mat_reshaped.transpose(0,1)
+        pool_mat_reshaped = pool_mat_reshaped.transpose(0, 1)
         # x.shape: [ 5023, 16, 16]
         # edge_index --> pool_mat._indices().shape : [ 2, 1256 ]
         # norm --> pool_mat._values().shape : [ 1256 ]
-        out = self.propagate(edge_index=pool_mat._indices(), x=x, norm=pool_mat._values(), size=pool_mat_reshaped.size())
-
+        out = self.propagate(edge_index=pool_mat._indices(), x=x, norm=pool_mat._values(),
+                             size=pool_mat_reshaped.size())
         return out
 
     def message(self, x_j, norm):
@@ -89,5 +84,4 @@ class Pool(MessagePassing):
         # norm.shape: [1256]
         #return norm.view(-1, 1, 1) * x_j
         return norm.view(1, -1, 1) * x_j
-
 

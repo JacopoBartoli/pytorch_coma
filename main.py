@@ -97,8 +97,8 @@ def main(args):
     dataset = ComaDataset(data_dir, dtype='train', split=args.split, split_term=args.split_term, pre_transform=normalize_transform)
     dataset_test = ComaDataset(data_dir, dtype='test', split=args.split, split_term=args.split_term, pre_transform=normalize_transform)
     # Set worker thread to zero if you are debugging.
-    train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers= workers_thread)
-    test_loader = DataLoader(dataset_test, batch_size=1, shuffle=False, num_workers= workers_thread)
+    train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers= 0)
+    test_loader = DataLoader(dataset_test, batch_size=1, shuffle=False, num_workers= 0)
 
     print('Loading model')
     start_epoch = 1
@@ -159,7 +159,7 @@ def train(coma, train_loader, len_dataset, optimizer, device):
         data = data.to(device)
         optimizer.zero_grad()
         out = coma(data)
-        loss = F.l1_loss(out.cuda(), data.y.cuda())
+        loss = F.l1_loss(out, data.y)
 
         # out.shape:torch.Size([80368, 3])
         # data: Batch(batch=[80368], edge_index=[2, 479840], x=[80368, 3], y=[80368, 3])
