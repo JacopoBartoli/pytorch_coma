@@ -97,8 +97,8 @@ def main(args):
     dataset = ComaDataset(data_dir, dtype='train', split=args.split, split_term=args.split_term, pre_transform=normalize_transform)
     dataset_test = ComaDataset(data_dir, dtype='test', split=args.split, split_term=args.split_term, pre_transform=normalize_transform)
     # Set worker thread to zero if you are debugging.
-    train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers= 0)
-    test_loader = DataLoader(dataset_test, batch_size=1, shuffle=False, num_workers= 0)
+    train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers= workers_thread)
+    test_loader = DataLoader(dataset_test, batch_size=1, shuffle=False, num_workers= workers_thread)
 
     print('Loading model')
     start_epoch = 1
