@@ -126,7 +126,7 @@ def main(args):
 
     if eval_flag:
         val_loss, val_eucl = evaluate(coma, output_dir, test_loader, dataset_test, template_mesh, device, visualize)
-        print('val loss', val_loss)
+        print('val loss ', val_loss, ' val euclid ', val_eucl)
         return
 
     best_val_loss = float('inf')
@@ -136,8 +136,7 @@ def main(args):
         print("Training for epoch ", epoch)
         train_loss = train(coma, train_loader, len(dataset), optimizer, device)
         val_loss, val_eucl = evaluate(coma, output_dir, test_loader, dataset_test, template_mesh, device, visualize=visualize)
-
-        print('epoch ', epoch,' Train loss ', train_loss, ' Val loss ', val_loss)
+        print('epoch ', epoch, ' Train loss ', train_loss, ' Val L1 ', val_loss, 'Val Euclidean ', val_eucl)
         if val_loss < best_val_loss:
             save_model(coma, optimizer, epoch, train_loss, val_loss, checkpoint_dir)
             best_val_loss = val_loss
