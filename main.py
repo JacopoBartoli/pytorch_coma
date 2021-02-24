@@ -125,7 +125,7 @@ def main(args):
     coma.to(device)
 
     if eval_flag:
-        val_loss = evaluate(coma, output_dir, test_loader, dataset_test, template_mesh, device, visualize)
+        val_loss, val_eucl = evaluate(coma, output_dir, test_loader, dataset_test, template_mesh, device, visualize)
         print('val loss', val_loss)
         return
 
@@ -135,7 +135,7 @@ def main(args):
     for epoch in range(start_epoch, total_epochs + 1):
         print("Training for epoch ", epoch)
         train_loss = train(coma, train_loader, len(dataset), optimizer, device)
-        val_loss = evaluate(coma, output_dir, test_loader, dataset_test, template_mesh, device, visualize=visualize)
+        val_loss, val_eucl = evaluate(coma, output_dir, test_loader, dataset_test, template_mesh, device, visualize=visualize)
 
         print('epoch ', epoch,' Train loss ', train_loss, ' Val loss ', val_loss)
         if val_loss < best_val_loss:
@@ -198,7 +198,7 @@ def evaluate(coma, output_dir, test_loader, dataset, template_mesh, device, visu
             meshviewer[0][1].set_dynamic_meshes([expected_mesh])
             meshviewer[0][0].save_snapshot(os.path.join(output_dir, 'file'+str(i)+'.png'), blocking=False)
 
-    return total_loss/len(dataset)
+    return total_loss/len(dataset), total_euclidean/len(dataset)
 
 
 if __name__ == '__main__':
